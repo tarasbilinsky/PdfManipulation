@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+        version="2.4">
+  
+  <display-name>NCS</display-name>
+
+    <servlet>
+            <servlet-name>ValidatePdf</servlet-name>
+            <servlet-class>ValidatePdf</servlet-class>
+    </servlet>
+    
+    <servlet>
+            <servlet-name>MergePdf</servlet-name>
+            <servlet-class>MergePdf</servlet-class>
+    </servlet>
+    
+    <servlet>
+            <servlet-name>FillFormPdf</servlet-name>
+            <servlet-class>FillFormPdf</servlet-class>
+    </servlet>
+    
+    <servlet>
+            <servlet-name>ImagesPdf</servlet-name>
+            <servlet-class>ImagesPdf</servlet-class>
+    </servlet>
+    
+    <servlet>
+            <servlet-name>GetFile</servlet-name>
+            <servlet-class>GetFile</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Html2Pdf</servlet-name>
+        <servlet-class>Html2Pdf</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>LockEms</servlet-name>
+        <servlet-class>LockEms</servlet-class>
+    </servlet>
+                        
+    <servlet-mapping>
+        <servlet-name>ValidatePdf</servlet-name>
+        <url-pattern>/validatePdf</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>MergePdf</servlet-name>
+        <url-pattern>/mergePdf</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>FillFormPdf</servlet-name>
+        <url-pattern>/fillFormPdf</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>ImagesPdf</servlet-name>
+        <url-pattern>/imagesPdf</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>GetFile</servlet-name>
+        <url-pattern>/getFile</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Html2Pdf</servlet-name>
+        <url-pattern>/html2Pdf</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LockEms</servlet-name>
+        <url-pattern>/lockEms</url-pattern>
+    </servlet-mapping>
+
+
+
+</web-app>
