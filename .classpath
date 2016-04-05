@@ -8,6 +8,5 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
 	<classpathentry kind="src" path="WEB-INF/src"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/itextpdf-5.5.5.jar"/>
-	<classpathentry kind="lib" path="/TTA/lib/playHSAgentProd.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
