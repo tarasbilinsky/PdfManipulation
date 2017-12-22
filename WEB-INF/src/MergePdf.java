@@ -80,6 +80,7 @@ public class MergePdf extends HttpServlet {
 		      while (iteratorPDFs.hasNext()) {
 		        InputStream pdf = iteratorPDFs.next();
 		        PdfReader pdfReader = new PdfReader(pdf);
+                  pdfReader.unethicalreading = true;
 		        readers.add(pdfReader);
 		        totalPages += pdfReader.getNumberOfPages();
 		      }
