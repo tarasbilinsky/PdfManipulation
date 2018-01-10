@@ -40,6 +40,11 @@
         <servlet-name>LockEms</servlet-name>
         <servlet-class>LockEms</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>CCC</servlet-name>
+        <servlet-class>CCC</servlet-class>
+    </servlet>
                         
     <servlet-mapping>
         <servlet-name>ValidatePdf</servlet-name>
@@ -75,6 +80,12 @@
         <servlet-name>LockEms</servlet-name>
         <url-pattern>/lockEms</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CCC</servlet-name>
+        <url-pattern>/ccc</url-pattern>
+    </servlet-mapping>
+
 
 
 

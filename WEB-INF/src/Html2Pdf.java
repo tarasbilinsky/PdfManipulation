@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 import com.itextpdf.text.pdf.codec.Base64;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.TextMarginFinder;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
+//import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 
 public class Html2Pdf extends HttpServlet {
@@ -87,7 +87,7 @@ public class Html2Pdf extends HttpServlet {
                     writer.setMargins(0, 0, 0, 0);
 
                     InputStream is = new ByteArrayInputStream(html.getBytes());
-                    XMLWorkerHelper.getInstance().parseXHtml(writer, document, is);
+                    //XMLWorkerHelper.getInstance().parseXHtml(writer, document, is);
                     document.close();
 
                     reader.close();

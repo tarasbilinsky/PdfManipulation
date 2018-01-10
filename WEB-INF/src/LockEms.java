@@ -2,7 +2,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
@@ -16,11 +15,11 @@ import java.util.Arrays;
 public class LockEms extends HttpServlet {
 
     public static void main (String[] args){
-        boolean res = lockIfNotLocked("/Users/taras/Downloads/FZK0OLD/FZK0OLD.env");
+        boolean res = lockIfNotLocked("/Users/taras/Downloads/FZK0OLD/FZK0OLD.env", true);
         java.lang.System.out.println(res);
     }
 
-    public static boolean lockIfNotLocked(String filename) {
+    private static boolean lockIfNotLocked(String filename, boolean lockOn) {
         final String findName = "STATUS";
 
         Path path = Paths.get(filename);
@@ -42,16 +41,25 @@ public class LockEms extends HttpServlet {
             findLen+=fLen;
         }
 
-        boolean wasLocked = false;
+        boolean notChanged = false;
         char locked = (char) data[findLen];
-        if(locked=='Y' || locked=='y' || locked=='T' || locked=='t') wasLocked = true;
-        else if(locked=='N') data[findLen]='Y';
-        else if(locked=='n') data[findLen]='y';
-        else if(locked=='F') data[findLen]='T';
-        else if(locked=='f') data[findLen]='t';
-        else data[findLen]='Y';
+        if(lockOn) {
+            if (locked == 'Y' || locked == 'y' || locked == 'T' || locked == 't') notChanged = true;
+            else if (locked == 'N') data[findLen] = 'Y';
+            else if (locked == 'n') data[findLen] = 'y';
+            else if (locked == 'F') data[findLen] = 'T';
+            else if (locked == 'f') data[findLen] = 't';
+            else data[findLen] = 'Y';
+        } else {
+            if (locked == 'N' || locked == 'n' || locked == 'F' || locked == 'f') notChanged = true;
+            else if (locked == 'Y') data[findLen] = 'N';
+            else if (locked == 'y') data[findLen] = 'n';
+            else if (locked == 'T') data[findLen] = 'F';
+            else if (locked == 't') data[findLen] = 'f';
+            else data[findLen] = 'N';
+        }
 
-        if(wasLocked);
+        if(notChanged);
 
         else{
             try {
@@ -62,7 +70,7 @@ public class LockEms extends HttpServlet {
 
         }
 
-        return wasLocked;
+        return notChanged;
     }
 
     private static short getShort(final byte[] data, final int index){
@@ -81,15 +89,17 @@ public class LockEms extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Exception error = null;
-        boolean res = false;
+        boolean notChanged = false;
         try{
             String fileLocation = request.getParameter("fileLocation");
-            res = lockIfNotLocked(fileLocation);
+            String lockOnStr = request.getParameter("lockOn");
+            boolean lockOn = lockOnStr!=null && lockOnStr.equals("1");
+            notChanged = lockIfNotLocked(fileLocation,lockOn);
         } catch (Exception e){
             error = e;
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println(error==null?(res?"1":"0"):error.getLocalizedMessage());
+        out.println(error==null?(notChanged?"0":"1"):error.getLocalizedMessage());
     }
 }
