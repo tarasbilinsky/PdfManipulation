@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 public class LockEms extends HttpServlet {
 
     public static void main (String[] args){
-        boolean res = lockIfNotLocked("/Users/taras/Downloads/FZK0OLD/FZK0OLD.env", true);
+        boolean res = lockIfNotLocked("/Users/taras/Downloads/FZK0OLD.env", true);
         java.lang.System.out.println(res);
     }
 
@@ -33,13 +34,13 @@ public class LockEms extends HttpServlet {
         short headerLength = getShort(data,8);
 
         int findLen = headerLength+1;
-
+        boolean foundColumn = false;
         for(int i=32;i<headerLength;i+=32){
             String name = getString(data,i,11);
-            if(name.equals(findName)) break;
+            if(name!=null && name.equals(findName)){ foundColumn=true; break;}
             byte fLen = data[i+16];
             findLen+=fLen;
-        }
+        } if(!foundColumn) throw new RuntimeException("Column "+findName+" not found in "+data);
 
         boolean notChanged = false;
         char locked = (char) data[findLen];
@@ -86,20 +87,28 @@ public class LockEms extends HttpServlet {
         return r.toString();
     }
 
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Exception error = null;
         boolean notChanged = false;
+
+        String fileLocation = "";
+        boolean lockOn = true;
         try{
-            String fileLocation = request.getParameter("fileLocation");
+            fileLocation = request.getParameter("fileLocation");
             String lockOnStr = request.getParameter("lockOn");
-            boolean lockOn = lockOnStr!=null && lockOnStr.equals("1");
+            lockOn = lockOnStr!=null && lockOnStr.equals("1");
             notChanged = lockIfNotLocked(fileLocation,lockOn);
         } catch (Exception e){
             error = e;
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println(error==null?(notChanged?"0":"1"):error.getLocalizedMessage());
+        out.println(error==null?(notChanged?"0":"1"):error.getLocalizedMessage()+"\r\n File: "+fileLocation+" "+(lockOn?"lock":"unlock")+"\r\n\r\n"+printStackTrace(error));
+    }
+
+    private String printStackTrace(Throwable e){
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+        return errors.toString();
     }
 }
